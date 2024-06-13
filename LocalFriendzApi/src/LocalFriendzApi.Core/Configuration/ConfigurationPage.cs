@@ -1,6 +1,6 @@
-﻿namespace LocalFriendzApi.Core
+﻿namespace LocalFriendzApi.Core.Configuration
 {
-    public static class Configuration
+    public static class ConfigurationPage
     {
         public const int DefaultStatusCode = 200;
         public const int DefaultPageNumber = 1;

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using LocalFriendzApi.Core.Configuration;
+using System.Text.Json.Serialization;
 
 namespace LocalFriendzApi.Core.Responses
 {
@@ -9,7 +10,7 @@ namespace LocalFriendzApi.Core.Responses
         TData? data,
         int totalCount,
         int currentPage = 1,
-        int pageSize = Configuration.DefaultPageSize)
+        int pageSize = ConfigurationPage.DefaultPageSize)
         : base(data)
         {
             Data = data;
@@ -20,7 +21,7 @@ namespace LocalFriendzApi.Core.Responses
 
         public PagedResponse(
             TData? data,
-            int code = Configuration.DefaultStatusCode,
+            int code = ConfigurationPage.DefaultStatusCode,
             string? message = null)
             : base(data, code, message)
         {
@@ -28,7 +29,7 @@ namespace LocalFriendzApi.Core.Responses
 
         public int CurrentPage { get; set; }
         public int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
-        public int PageSize { get; set; } = Configuration.DefaultPageSize;
+        public int PageSize { get; set; } = ConfigurationPage.DefaultPageSize;
         public int TotalCount { get; set; }
     }
 }

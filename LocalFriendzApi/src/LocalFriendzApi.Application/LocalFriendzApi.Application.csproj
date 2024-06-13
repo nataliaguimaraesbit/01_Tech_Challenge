@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LocalFriendzApi.Core\LocalFriendzApi.Core.csproj" />
+  </ItemGroup>
+
 </Project>

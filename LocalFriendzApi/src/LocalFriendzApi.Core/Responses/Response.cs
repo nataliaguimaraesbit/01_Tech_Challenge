@@ -1,15 +1,16 @@
-﻿using System.Text.Json.Serialization;
+﻿using LocalFriendzApi.Core.Configuration;
+using System.Text.Json.Serialization;
 
 namespace LocalFriendzApi.Core.Responses
 {
     public class Response<TData>
     {
-        private int _code = Configuration.DefaultStatusCode;
+        private int _code = ConfigurationPage.DefaultStatusCode;
 
         [JsonConstructor]
-        public Response() => _code = Configuration.DefaultStatusCode;
+        public Response() => _code = ConfigurationPage.DefaultStatusCode;
 
-        public Response(TData? data, int code = Configuration.DefaultStatusCode, string? message = null)
+        public Response(TData? data, int code = ConfigurationPage.DefaultStatusCode, string? message = null)
         {
             Data = data;
             _code = code;
