@@ -6,9 +6,7 @@ using LocalFriendzApi.Core.Requests.Contact;
 using LocalFriendzApi.Infrastructure.Data;
 using LocalFriendzApi.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Net;
-using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -23,12 +21,6 @@ builder.Services.AddDbContext<AppDbContext>(
                     x.UseSqlServer(ApiConfiguration.ConnectionString);
                 });
 
-builder.Services.AddControllers()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-    });
-
 
 var app = builder.Build();
 
@@ -37,12 +29,11 @@ app.MapPost("api/create-contact", async (IContactServices contactServices, Creat
 
     var response = await contactServices.CreateAsync(request);
 
-    // ~~> NÃO ESTÁ FUNCIONANDO NA HORA DE RETORNAR NA TELA.
-    return Results.Created($"/api/create-contact/{response.Data.Name}", response);
+    return Results.Created($"/api/create-contact/", response);
 
 
 }).WithOpenApi()
-            .WithName("CreateTodo")
+            .WithName("LocalFriendz")
             .WithTags("Posts")
             .WithSummary("Create a new Contact")
             .WithDescription("Endpoint to create a new Contact.")

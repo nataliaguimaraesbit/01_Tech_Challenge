@@ -78,15 +78,10 @@ namespace LocalFriendzApi.Infrastructure.Migrations
             modelBuilder.Entity("LocalFriendzApi.Core.Models.Contact", b =>
                 {
                     b.HasOne("LocalFriendzApi.Core.Models.AreaCode", "AreaCode")
-                        .WithMany("Contacts")
+                        .WithMany()
                         .HasForeignKey("AreaCodeIdAreaCode");
 
                     b.Navigation("AreaCode");
-                });
-
-            modelBuilder.Entity("LocalFriendzApi.Core.Models.AreaCode", b =>
-                {
-                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }

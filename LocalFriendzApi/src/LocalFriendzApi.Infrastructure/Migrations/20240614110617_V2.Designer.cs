@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocalFriendzApi.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240613032644_Migration_V1")]
-    partial class Migration_V1
+    [Migration("20240614110617_V2")]
+    partial class V2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,15 +81,10 @@ namespace LocalFriendzApi.Infrastructure.Migrations
             modelBuilder.Entity("LocalFriendzApi.Core.Models.Contact", b =>
                 {
                     b.HasOne("LocalFriendzApi.Core.Models.AreaCode", "AreaCode")
-                        .WithMany("Contacts")
+                        .WithMany()
                         .HasForeignKey("AreaCodeIdAreaCode");
 
                     b.Navigation("AreaCode");
-                });
-
-            modelBuilder.Entity("LocalFriendzApi.Core.Models.AreaCode", b =>
-                {
-                    b.Navigation("Contacts");
                 });
 #pragma warning restore 612, 618
         }

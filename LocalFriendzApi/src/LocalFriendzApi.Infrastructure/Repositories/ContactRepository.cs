@@ -6,7 +6,7 @@ namespace LocalFriendzApi.Infrastructure.Repositories
 {
     public class ContactRepository(AppDbContext context) : IContactRepository
     {
-        public async Task<Contact> Create(Contact contact)
+        public async Task<Contact?> Create(Contact contact)
         {
             await context.Contacts.AddAsync(contact);
             await context.SaveChangesAsync();
