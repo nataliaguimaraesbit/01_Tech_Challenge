@@ -1,4 +1,3 @@
-using Azure.Core;
 using LocalFriendzApi.Application.IServices;
 using LocalFriendzApi.Application.Services;
 using LocalFriendzApi.Core.Configuration;
@@ -60,9 +59,9 @@ app.MapGet("api/list-all-by-parameters/{name}", async (IContactServices contactS
 
 app.MapPut("update/{id}", async (IContactServices contactServices, Guid id, UpdateContactRequest request) =>
 {
-    var response = await contactServices.PutContact(id,request);
+    var response = await contactServices.PutContact(id, request);
 
-    if(response is null)
+    if (response is null)
     {
         Results.NotFound();
     }

@@ -25,7 +25,7 @@ namespace LocalFriendzApi.Application.Services
         public async Task<Response<Contact>> GetAsync(string name)
         {
             var response = await _contactRepository.Search(name);
-            
+
             return null;
         }
 

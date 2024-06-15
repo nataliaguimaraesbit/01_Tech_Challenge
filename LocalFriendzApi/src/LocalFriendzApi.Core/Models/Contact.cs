@@ -24,7 +24,7 @@ namespace LocalFriendzApi.Core.Models
         public static Contact RequestMapper(GetContactRequest request)
         {
             return new Contact()
-            {                
+            {
                 AreaCode = new AreaCode() { CodeRegion = request.AreaCode }
             };
         }

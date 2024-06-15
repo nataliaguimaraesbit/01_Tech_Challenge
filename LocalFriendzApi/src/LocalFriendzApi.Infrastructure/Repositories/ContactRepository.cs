@@ -1,5 +1,4 @@
-﻿using Azure;
-using LocalFriendzApi.Core.IRepositories;
+﻿using LocalFriendzApi.Core.IRepositories;
 using LocalFriendzApi.Core.Models;
 using LocalFriendzApi.Core.Requests.Contact;
 using LocalFriendzApi.Infrastructure.Data;
