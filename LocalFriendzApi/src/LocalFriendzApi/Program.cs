@@ -1,3 +1,4 @@
+using Azure.Core;
 using LocalFriendzApi.Application.IServices;
 using LocalFriendzApi.Application.Services;
 using LocalFriendzApi.Core.Configuration;
@@ -38,6 +39,55 @@ app.MapPost("api/create-contact", async (IContactServices contactServices, Creat
             .WithSummary("Create a new Contact")
             .WithDescription("Endpoint to create a new Contact.")
             .Produces((int)HttpStatusCode.Created)
+            .Produces((int)HttpStatusCode.NotFound)
+            .Produces((int)HttpStatusCode.InternalServerError);
+
+app.MapGet("api/list-all-by-parameters/{name}", async (IContactServices contactServices, string name = " ") =>
+{
+    var response = await contactServices.GetAsync(name);
+
+    return Results.Created($"/api/list-all-by-parameters/{name}", response);
+
+}).WithOpenApi()
+              //.WithName("LocalFriendz")
+              .WithTags("Gets")
+              .WithSummary("Get Contacts")
+              .WithDescription("Endpoint to get contacts.")
+              .Produces((int)HttpStatusCode.Created)
+              .Produces((int)HttpStatusCode.NotFound)
+              .Produces((int)HttpStatusCode.InternalServerError);
+
+
+app.MapPut("update/{id}", async (IContactServices contactServices, Guid id, UpdateContactRequest request) =>
+{
+    var response = await contactServices.PutContact(id,request);
+
+    if(response is null)
+    {
+        Results.NotFound();
+    }
+    Results.NoContent();
+
+
+}).WithOpenApi()
+              .WithTags("Puts")
+              .WithSummary("Put Contacts")
+              .WithDescription("Endpoint to put contacts.")
+              .Produces((int)HttpStatusCode.Created)
+              .Produces((int)HttpStatusCode.NotFound)
+              .Produces((int)HttpStatusCode.InternalServerError);
+
+app.MapDelete("remove/{id}", async (IContactServices contactServices, Guid id) =>
+{
+    var response = await contactServices.DeleteContact(id);
+    return Results.Ok(response);
+
+}).WithOpenApi()
+            .WithName("DeleteTodo")
+            .WithTags("Deletes")
+            .WithSummary("Delete a task")
+            .WithDescription("Endpoint to delete an existing task based on the provided ID.")
+            .Produces((int)HttpStatusCode.OK)
             .Produces((int)HttpStatusCode.NotFound)
             .Produces((int)HttpStatusCode.InternalServerError);
 

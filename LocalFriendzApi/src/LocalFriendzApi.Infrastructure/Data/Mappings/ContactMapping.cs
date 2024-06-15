@@ -9,7 +9,11 @@ namespace LocalFriendzApi.Infrastructure.Data.Mappings
         public void Configure(EntityTypeBuilder<Contact> builder)
         {
             builder.ToTable("TB_CONTACT");
-            builder.HasKey(c => c.Id).HasName("id_contact");
+            builder.HasKey(c => c.Id)
+                    .HasName("id_contact");
+
+            builder.Property(c => c.Id)
+                   .HasColumnName("id_contact");
 
             builder.Property(c => c.Name)
                 .IsRequired(true)
@@ -28,6 +32,15 @@ namespace LocalFriendzApi.Infrastructure.Data.Mappings
                 .HasColumnName("email")
                 .HasColumnType("NVARCHAR")
                 .HasMaxLength(40);
+
+            builder.Property(c => c.AreaCodeId)
+              .HasColumnName("fk_id_area_code");
+
+            builder.HasOne(c => c.AreaCode)
+              .WithMany()
+              .HasForeignKey(c => c.AreaCodeId)
+              .OnDelete(DeleteBehavior.Cascade)
+              .HasConstraintName("FK_Contact_AreaCode");
         }
     }
 }

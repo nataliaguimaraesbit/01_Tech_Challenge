@@ -26,7 +26,8 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                 {
                     b.Property<Guid>("IdAreaCode")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id_area_code");
 
                     b.Property<string>("CodeRegion")
                         .IsRequired()
@@ -34,8 +35,7 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                         .HasColumnType("NVARCHAR")
                         .HasColumnName("code_region");
 
-                    b.HasKey("IdAreaCode")
-                        .HasName("id_area_code");
+                    b.HasKey("IdAreaCode");
 
                     b.ToTable("TB_AREA_CODE", (string)null);
                 });
@@ -44,10 +44,12 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id_contact");
 
-                    b.Property<Guid?>("AreaCodeIdAreaCode")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("AreaCodeId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("fk_id_area_code");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -70,7 +72,7 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("id_contact");
 
-                    b.HasIndex("AreaCodeIdAreaCode");
+                    b.HasIndex("AreaCodeId");
 
                     b.ToTable("TB_CONTACT", (string)null);
                 });
@@ -79,7 +81,10 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                 {
                     b.HasOne("LocalFriendzApi.Core.Models.AreaCode", "AreaCode")
                         .WithMany()
-                        .HasForeignKey("AreaCodeIdAreaCode");
+                        .HasForeignKey("AreaCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Contact_AreaCode");
 
                     b.Navigation("AreaCode");
                 });
