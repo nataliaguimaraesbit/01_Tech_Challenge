@@ -82,6 +82,7 @@ namespace LocalFriendzApi.Infrastructure.Repositories
                 var query = await context
                                   .Contacts
                                   .AsNoTracking()
+                                  .Include(a => a.AreaCode)
                                   .OrderBy(c => c.Name)
                                   .ToListAsync();
 
@@ -111,6 +112,7 @@ namespace LocalFriendzApi.Infrastructure.Repositories
                 var contact = await context
                     .Contacts
                     .AsNoTracking()
+                    .Include(a => a.AreaCode)
                     .FirstOrDefaultAsync(x => x.Id == request.IdContact);
 
                 return contact is null
