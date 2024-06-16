@@ -1,6 +1,7 @@
 ﻿using LocalFriendzApi.Core.IRepositories;
 using LocalFriendzApi.Core.Models;
 using LocalFriendzApi.Core.Requests.Contact;
+using LocalFriendzApi.Core.Responses;
 using LocalFriendzApi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,59 +9,118 @@ namespace LocalFriendzApi.Infrastructure.Repositories
 {
     public class ContactRepository(AppDbContext context) : IContactRepository
     {
-        public async Task<Contact?> Create(Contact contact)
+        public async Task<Response<Contact?>> Create(Contact contact)
         {
-            await context.Contacts.AddAsync(contact);
-            await context.SaveChangesAsync();
+            try
+            {
+                await context.Contacts.AddAsync(contact);
+                await context.SaveChangesAsync();
 
-            return contact;
+                return new Response<Contact?>(contact, 201, "Contact created with sucess!");
+            }
+            catch (Exception)
+            {
+                return new Response<Contact?>(null, 500, "Internal server erro.");
+            }
         }
 
-        public async Task<List<Contact?>> Search(string name)
+        public async Task<Response<Contact?>> Update(Guid id, UpdateContactRequest request)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            try
             {
-                return await context.Contacts.ToListAsync();
-            }
-            else
-            {
-                return await context.Contacts.Where(a => a.Name.Equals(name)).ToListAsync();
-            }
-
-        }
-
-        public async Task<Contact?> Update(Guid id, UpdateContactRequest request)
-        {
-            var response = await context.Contacts
+                var contact = await context.Contacts
                                         .Include(a => a.AreaCode)
                                         .FirstOrDefaultAsync(a => a.Id == id);
 
-            if (response is null)
-            {
-                return null;
+                if (contact is null)
+                {
+                    return new Response<Contact?>(null, 404, "Contact not found!");
+                }
+
+                // Novos valores
+                contact.Name = request.Name;
+
+                context.Contacts.Update(contact);
+                await context.SaveChangesAsync();
+
+                return new Response<Contact?>(contact, message: "Contact update with sucess!");
             }
-
-            response.Name = request.Name;
-            await context.SaveChangesAsync();
-
-            return response;
+            catch (Exception)
+            {
+                return new Response<Contact?>(null, 500, "Internal Server Erro!");
+            }
         }
 
-        public async Task<Contact?> Delete(Guid id)
+        public async Task<Response<Contact?>> Delete(Guid id)
         {
-            var response = await context.Contacts
+            try
+            {
+                var contact = await context.Contacts
                                         .Include(a => a.AreaCode)
                                         .FirstOrDefaultAsync(a => a.Id == id);
 
-            if (response is null)
-            {
-                return null;
+                if (contact is null)
+                {
+                    return new Response<Contact?>(null, 404, "Contact not found!");
+                }
+
+                context.Contacts.Remove(contact);
+                await context.SaveChangesAsync();
+
+                return new Response<Contact?>(contact, message: "Removed contact with sucess!");
             }
+            catch (Exception)
+            {
+                return new Response<Contact?>(null, 500, "Internal server erro!");
+            }
+        }
 
-            context.Contacts.Remove(response);
-            await context.SaveChangesAsync();
+        public async Task<PagedResponse<List<Contact>?>> GetAll(GetAllContactRequest request)
+        {
+            try
+            {
+                var query = await context
+                                  .Contacts
+                                  .AsNoTracking()
+                                  .OrderBy(c => c.Name)
+                                  .ToListAsync();
 
-            return response;
+                var contacts = query
+                                   .Skip((request.PageNumber - 1) * request.PageSize)
+                                   .Take(request.PageSize)
+                                   .ToList();
+
+                var count = query.Count();
+
+                return new PagedResponse<List<Contact>?>(
+                    contacts,
+                    count,
+                    request.PageNumber,
+                    request.PageSize);
+            }
+            catch
+            {
+                return new PagedResponse<List<Contact>?>(null, 500, "Internal Server Erro!");
+            }
+        }
+
+        public async Task<Response<Contact?>> GetContactByFilter(GetAllByFilter request)
+        {
+            try
+            {
+                var contact = await context
+                    .Contacts
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Id == request.IdContact);
+
+                return contact is null
+                    ? new Response<Contact?>(null, 404, "Not found contact.")
+                    : new Response<Contact?>(contact);
+            }
+            catch
+            {
+                return new Response<Contact?>(null, 500, "Internal server erro");
+            }
         }
     }
 }

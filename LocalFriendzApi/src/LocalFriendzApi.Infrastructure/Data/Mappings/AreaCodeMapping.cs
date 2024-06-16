@@ -12,12 +12,12 @@ namespace LocalFriendzApi.Infrastructure.Data.Mappings
             builder.HasKey(c => c.IdAreaCode);
 
             builder.Property(c => c.IdAreaCode)
-            .HasColumnName("id_area_code");
+                .HasColumnName("id_area_code");
 
             builder.Property(c => c.CodeRegion)
                 .IsRequired(true)
                 .HasColumnName("code_region")
-                .HasColumnType("NVARCHAR")
+                .HasColumnType("VARCHAR")
                 .HasMaxLength(2);
         }
     }

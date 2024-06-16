@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocalFriendzApi.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240615043117_V5")]
-    partial class V5
+    [Migration("20240615143659_V1")]
+    partial class V1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,7 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                     b.Property<string>("CodeRegion")
                         .IsRequired()
                         .HasMaxLength(2)
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("VARCHAR")
                         .HasColumnName("code_region");
 
                     b.HasKey("IdAreaCode");
@@ -57,23 +57,22 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(40)
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("VARCHAR")
                         .HasColumnName("email");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("VARCHAR")
                         .HasColumnName("name");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("VARCHAR")
                         .HasColumnName("phone");
 
-                    b.HasKey("Id")
-                        .HasName("id_contact");
+                    b.HasKey("Id");
 
                     b.HasIndex("AreaCodeId");
 
@@ -86,8 +85,7 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("AreaCodeId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Contact_AreaCode");
+                        .IsRequired();
 
                     b.Navigation("AreaCode");
                 });

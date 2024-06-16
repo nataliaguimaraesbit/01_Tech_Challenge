@@ -2,7 +2,9 @@ using LocalFriendzApi.Application.IServices;
 using LocalFriendzApi.Application.Services;
 using LocalFriendzApi.Core.Configuration;
 using LocalFriendzApi.Core.IRepositories;
+using LocalFriendzApi.Core.Models;
 using LocalFriendzApi.Core.Requests.Contact;
+using LocalFriendzApi.Core.Responses;
 using LocalFriendzApi.Infrastructure.Data;
 using LocalFriendzApi.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -28,67 +30,75 @@ app.MapPost("api/create-contact", async (IContactServices contactServices, Creat
 {
 
     var response = await contactServices.CreateAsync(request);
-
-    return Results.Created($"/api/create-contact/", response);
-
+    return response;
 
 }).WithOpenApi()
-            .WithName("LocalFriendz")
             .WithTags("Posts")
-            .WithSummary("Create a new Contact")
-            .WithDescription("Endpoint to create a new Contact.")
+            .WithName("Contact: Create")
+            .WithSummary("Create new contact.")
+            .WithDescription("Save a new contact.")
             .Produces((int)HttpStatusCode.Created)
-            .Produces((int)HttpStatusCode.NotFound)
-            .Produces((int)HttpStatusCode.InternalServerError);
+            .Produces((int)HttpStatusCode.InternalServerError)
+            .Produces<Response<Contact?>>();
 
-app.MapGet("api/list-all-by-parameters/{name}", async (IContactServices contactServices, string name = " ") =>
+app.MapGet("api/list-all", async (IContactServices contactServices) =>
 {
-    var response = await contactServices.GetAsync(name);
-
-    return Results.Created($"/api/list-all-by-parameters/{name}", response);
+    GetAllContactRequest request = new();
+    var response = await contactServices.GetAll(request);
+    return response;
 
 }).WithOpenApi()
-              //.WithName("LocalFriendz")
-              .WithTags("Gets")
-              .WithSummary("Get Contacts")
-              .WithDescription("Endpoint to get contacts.")
-              .Produces((int)HttpStatusCode.Created)
-              .Produces((int)HttpStatusCode.NotFound)
-              .Produces((int)HttpStatusCode.InternalServerError);
+            .WithTags("Gets")
+            .WithName("Contact: Gets Record")
+            .WithSummary("Get all records.")
+            .WithDescription("Get all contact.")
+            .Produces((int)HttpStatusCode.Created)
+            .Produces((int)HttpStatusCode.InternalServerError)
+            .Produces<PagedResponse<List<Contact>?>>();
+
+app.MapPost("api/list-by-filter", async (IContactServices contactServices, GetAllByFilter request) =>
+{
+    var response = await contactServices.GetByFilter(request);
+    return response;
+
+}).WithOpenApi()
+            .WithTags("Posts")
+            .WithName("Contact: Gets by filter.")
+            .WithSummary("Get by filter")
+            .WithDescription("Get contacts use by filter.")
+            .Produces((int)HttpStatusCode.Created)
+            .Produces((int)HttpStatusCode.InternalServerError)
+            .Produces<Response<Contact?>>();
 
 
-app.MapPut("update/{id}", async (IContactServices contactServices, Guid id, UpdateContactRequest request) =>
+app.MapPut("api/update", async (IContactServices contactServices, Guid id, UpdateContactRequest request) =>
 {
     var response = await contactServices.PutContact(id, request);
-
-    if (response is null)
-    {
-        Results.NotFound();
-    }
-    Results.NoContent();
+    return response;
 
 
 }).WithOpenApi()
-              .WithTags("Puts")
-              .WithSummary("Put Contacts")
-              .WithDescription("Endpoint to put contacts.")
-              .Produces((int)HttpStatusCode.Created)
-              .Produces((int)HttpStatusCode.NotFound)
-              .Produces((int)HttpStatusCode.InternalServerError);
+            .WithTags("Puts")
+            .WithName("Contact: Update")
+            .WithSummary("Update a contact.")
+            .WithDescription("Update a contact if there is.")
+            .Produces((int)HttpStatusCode.OK)
+            .Produces((int)HttpStatusCode.InternalServerError)
+            .Produces<Response<Contact?>>();
 
-app.MapDelete("remove/{id}", async (IContactServices contactServices, Guid id) =>
+app.MapDelete("api/remove", async (IContactServices contactServices, Guid id) =>
 {
     var response = await contactServices.DeleteContact(id);
-    return Results.Ok(response);
+    return response;
 
 }).WithOpenApi()
-            .WithName("DeleteTodo")
-            .WithTags("Deletes")
-            .WithSummary("Delete a task")
-            .WithDescription("Endpoint to delete an existing task based on the provided ID.")
+            .WithTags("Delete")
+            .WithName("Contact: remove")
+            .WithSummary("Remove a contact.")
+            .WithDescription("Delete a specific contact if there is.")
             .Produces((int)HttpStatusCode.OK)
-            .Produces((int)HttpStatusCode.NotFound)
-            .Produces((int)HttpStatusCode.InternalServerError);
+            .Produces((int)HttpStatusCode.InternalServerError)
+            .Produces<Response<Contact?>>();
 
 
 if (app.Environment.IsDevelopment())

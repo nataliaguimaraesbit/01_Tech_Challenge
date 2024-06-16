@@ -20,25 +20,31 @@ namespace LocalFriendzApi.Application.Services
             var contact = Contact.RequestMapper(request);
             var response = await _contactRepository.Create(contact);
 
-            return new Response<Contact?>(response, 201, "Contato criada com sucesso!");
+            return response;
         }
-        public async Task<Response<Contact>> GetAsync(string name)
+        public async Task<PagedResponse<List<Contact>?>> GetAll(GetAllContactRequest request)
         {
-            var response = await _contactRepository.Search(name);
-
-            return null;
+            var response = await _contactRepository.GetAll(request);
+            return response;
         }
 
-        public async Task<Contact> PutContact(Guid id, UpdateContactRequest request)
+        public async Task<Response<Contact?>> PutContact(Guid id, UpdateContactRequest request)
         {
             var response = await _contactRepository.Update(id, request);
             return response;
         }
 
-        public async Task<Contact> DeleteContact(Guid id)
+        public async Task<Response<Contact?>> DeleteContact(Guid id)
         {
             var response = await _contactRepository.Delete(id);
             return response;
         }
+
+        public async Task<Response<Contact?>> GetByFilter(GetAllByFilter request)
+        {
+            var response = await _contactRepository.GetContactByFilter(request);
+            return response;
+        }
+
     }
 }

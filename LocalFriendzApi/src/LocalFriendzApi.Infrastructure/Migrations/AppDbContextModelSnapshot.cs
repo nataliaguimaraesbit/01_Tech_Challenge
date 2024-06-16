@@ -32,7 +32,7 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                     b.Property<string>("CodeRegion")
                         .IsRequired()
                         .HasMaxLength(2)
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("VARCHAR")
                         .HasColumnName("code_region");
 
                     b.HasKey("IdAreaCode");
@@ -54,23 +54,22 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(40)
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("VARCHAR")
                         .HasColumnName("email");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("VARCHAR")
                         .HasColumnName("name");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("VARCHAR")
                         .HasColumnName("phone");
 
-                    b.HasKey("Id")
-                        .HasName("id_contact");
+                    b.HasKey("Id");
 
                     b.HasIndex("AreaCodeId");
 
@@ -83,8 +82,7 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("AreaCodeId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Contact_AreaCode");
+                        .IsRequired();
 
                     b.Navigation("AreaCode");
                 });
