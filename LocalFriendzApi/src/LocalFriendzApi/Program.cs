@@ -8,7 +8,6 @@ builder.AddDocumentation();
 builder.AddServices();
 
 var app = builder.Build();
-
 app.MapEndpoints();
 
 

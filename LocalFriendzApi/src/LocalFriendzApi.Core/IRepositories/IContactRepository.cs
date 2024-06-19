@@ -10,6 +10,6 @@ namespace LocalFriendzApi.Core.IRepositories
         Task<PagedResponse<List<Contact>?>> GetAll(GetAllContactRequest request);
         Task<Response<Contact?>> Update(Guid id, UpdateContactRequest request);
         Task<Response<Contact?>> Delete(Guid id);
-        Task<Response<Contact?>> GetContactByFilter(GetAllByFilter request);
+        Task<Response<Contact?>> GetContactByFilter(string codeRegion);
     }
 }

@@ -6,7 +6,7 @@ using System.Net;
 
 namespace LocalFriendzApi.Endpoints
 {
-    public static class Endpoint
+    public static class ContactEndpoint
     {
         public static void MapEndpoints(this WebApplication app)
         {
@@ -18,9 +18,9 @@ namespace LocalFriendzApi.Endpoints
 
             }).WithOpenApi()
             .WithTags("Posts")
-            .WithName("Contact: Create")
-            .WithSummary("Create new contact.")
-            .WithDescription("Save a new contact.")
+            .WithName("Contact: Create Contact")
+            .WithSummary("Create a new contact record.")
+            .WithDescription("Creates and saves a new contact in the system. This endpoint requires valid contact details including name, email, and phone number. Returns the created contact information upon successful save.")
             .Produces((int)HttpStatusCode.Created)
             .Produces((int)HttpStatusCode.InternalServerError)
             .Produces<Response<Contact?>>();
@@ -34,22 +34,22 @@ namespace LocalFriendzApi.Endpoints
             }).WithOpenApi()
             .WithTags("Gets")
             .WithName("Contact: Gets Record")
-            .WithSummary("Get all records.")
-            .WithDescription("Get all contact.")
+            .WithSummary("Retrieve all contact records.")
+            .WithDescription("Fetches and returns a list of all contact records stored in the system. This endpoint does not require any parameters and provides a comprehensive list of all available contacts.")
             .Produces((int)HttpStatusCode.Created)
             .Produces((int)HttpStatusCode.InternalServerError)
             .Produces<PagedResponse<List<Contact>?>>();
 
-            app.MapPost("api/list-by-filter", async (IContactServices contactServices, GetAllByFilter request) =>
+            app.MapGet("api/list-by-filter", async (IContactServices contactServices, string codeRegion) =>
             {
-                var response = await contactServices.GetByFilter(request);
+                var response = await contactServices.GetByFilter(codeRegion);
                 return response;
 
             }).WithOpenApi()
-            .WithTags("Posts")
-            .WithName("Contact: Gets by filter.")
-            .WithSummary("Get by filter")
-            .WithDescription("Get contacts use by filter.")
+            .WithTags("Gets")
+            .WithName("Contact: Get Record")
+            .WithSummary("Retrieve a contact record by filter.")
+            .WithDescription("Fetches a contact record based on the specified filter criteria, such as coderegion. This endpoint requires a valid coderegion parameter to return the corresponding contact details.")
             .Produces((int)HttpStatusCode.Created)
             .Produces((int)HttpStatusCode.InternalServerError)
             .Produces<Response<Contact?>>();
@@ -63,8 +63,8 @@ namespace LocalFriendzApi.Endpoints
             }).WithOpenApi()
             .WithTags("Puts")
             .WithName("Contact: Update")
-            .WithSummary("Update a contact.")
-            .WithDescription("Update a contact if there is.")
+            .WithSummary("Update an existing contact record.")
+            .WithDescription("Updates the details of an existing contact in the system. This endpoint requires the contact's unique identifier and the new information to be updated. If the contact exists, it will be updated with the provided details.")
             .Produces((int)HttpStatusCode.OK)
             .Produces((int)HttpStatusCode.InternalServerError)
             .Produces<Response<Contact?>>();
@@ -75,13 +75,13 @@ namespace LocalFriendzApi.Endpoints
                 return response;
 
             }).WithOpenApi()
-                        .WithTags("Delete")
-                        .WithName("Contact: remove")
-                        .WithSummary("Remove a contact.")
-                        .WithDescription("Delete a specific contact if there is.")
-                        .Produces((int)HttpStatusCode.OK)
-                        .Produces((int)HttpStatusCode.InternalServerError)
-                        .Produces<Response<Contact?>>();
+              .WithTags("Delete")
+              .WithName("Contact: remove")
+              .WithSummary("Remove an existing contact record.")
+              .WithDescription("Deletes a specific contact from the system based on the provided identifier. This endpoint requires the unique identifier of the contact to be deleted. If the contact exists, it will be removed from the system.")
+              .Produces((int)HttpStatusCode.OK)
+              .Produces((int)HttpStatusCode.InternalServerError)
+              .Produces<Response<Contact?>>();
         }
     }
 }

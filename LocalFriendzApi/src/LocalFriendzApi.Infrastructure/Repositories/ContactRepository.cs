@@ -39,6 +39,9 @@ namespace LocalFriendzApi.Infrastructure.Repositories
 
                 // Novos valores
                 contact.Name = request.Name;
+                contact.Email = request.Email;
+                contact.Phone = request.Phone;
+                contact.AreaCode.CodeRegion = request.AreaCode.CodeRegion;
 
                 context.Contacts.Update(contact);
                 await context.SaveChangesAsync();
@@ -105,7 +108,7 @@ namespace LocalFriendzApi.Infrastructure.Repositories
             }
         }
 
-        public async Task<Response<Contact?>> GetContactByFilter(GetAllByFilter request)
+        public async Task<Response<Contact?>> GetContactByFilter(string codeRegion)
         {
             try
             {
@@ -113,7 +116,7 @@ namespace LocalFriendzApi.Infrastructure.Repositories
                     .Contacts
                     .AsNoTracking()
                     .Include(a => a.AreaCode)
-                    .FirstOrDefaultAsync(x => x.Id == request.IdContact);
+                    .FirstOrDefaultAsync(x => x.AreaCode.CodeRegion.Equals(codeRegion));
 
                 return contact is null
                     ? new Response<Contact?>(null, 404, "Not found contact.")

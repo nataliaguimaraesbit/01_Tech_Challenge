@@ -40,9 +40,9 @@ namespace LocalFriendzApi.Application.Services
             return response;
         }
 
-        public async Task<Response<Contact?>> GetByFilter(GetAllByFilter request)
+        public async Task<Response<Contact?>> GetByFilter(string codeRegion)
         {
-            var response = await _contactRepository.GetContactByFilter(request);
+            var response = await _contactRepository.GetContactByFilter(codeRegion);
             return response;
         }
 
