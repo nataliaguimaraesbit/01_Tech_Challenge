@@ -54,7 +54,7 @@ namespace LocalFriendzApi.Endpoints
             .Produces((int)HttpStatusCode.InternalServerError)
             .Produces<Response<Contact?>>();
 
-            app.MapPut("api/update", async (IContactServices contactServices, Guid id, UpdateContactRequest request) =>
+            app.MapPut("api/update-contact", async (IContactServices contactServices, Guid id, UpdateContactRequest request) =>
             {
                 var response = await contactServices.PutContact(id, request);
                 return response;
@@ -69,7 +69,7 @@ namespace LocalFriendzApi.Endpoints
             .Produces((int)HttpStatusCode.InternalServerError)
             .Produces<Response<Contact?>>();
 
-            app.MapDelete("api/remove", async (IContactServices contactServices, Guid id) =>
+            app.MapDelete("api/delete-contact", async (IContactServices contactServices, Guid id) =>
             {
                 var response = await contactServices.DeleteContact(id);
                 return response;
