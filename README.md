@@ -8,14 +8,14 @@ O Tech Challenge desta fase será desenvolver um aplicativo utilizando a platafo
 
 Cenário de estudo de caso
 
-![Cenário de estudo de caso](https://github.com/Jeffconexion/01_Tech_Challenge/blob/development/imgs/Untitled.png)
+![Cenário de estudo de caso](https://github.com/Jeffconexion/01_Tech_Challenge/blob/development/LocalFriendzApi/imgs/Untitled.png)
 
 
 # Domain StoryTelling
 
 Para esclarecimento foi desenvolvido o domain storytelling. Esse vai ser o fluxo da solução LocalFriendzApi
 
-![ Esse vai ser o fluxo da solução LocalFriendzApi](https://github.com/Jeffconexion/01_Tech_Challenge/blob/development/imgs/Untitled%201.png)
+![ Esse vai ser o fluxo da solução LocalFriendzApi](https://github.com/Jeffconexion/01_Tech_Challenge/blob/development/LocalFriendzApi/imgs/Untitled%201.png)
 
 # Endpoints
 
