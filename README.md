@@ -9,17 +9,16 @@ O Tech Challenge desta fase será desenvolver um aplicativo utilizando a platafo
 
 # Estudo de caso
 
-![                                                                           Cenário de estudo de caso](Tech%20Challenger%20-%20Cadastro%20de%20Contatos%20Regionais%20a225a8d9f2e84c9991a1d2a6b6a4d1d8/Untitled.png)
+Cenário de estudo de caso
 
-                                                                           Cenário de estudo de caso
+![Cenário de estudo de caso](https://github.com/Jeffconexion/01_Tech_Challenge/blob/development/imgs/Untitled.png)
+
 
 # Domain StoryTelling
 
-Para esclarecimento foi desenvolvido o domain storytelling.
+Para esclarecimento foi desenvolvido o domain storytelling. Esse vai ser o fluxo da solução LocalFriendzApi
 
-![                                                  Esse vai ser o fluxo da solução LocalFriendzApi](Tech%20Challenger%20-%20Cadastro%20de%20Contatos%20Regionais%20a225a8d9f2e84c9991a1d2a6b6a4d1d8/Untitled%201.png)
-
-                                                  Esse vai ser o fluxo da solução LocalFriendzApi
+![ Esse vai ser o fluxo da solução LocalFriendzApi](https://github.com/Jeffconexion/01_Tech_Challenge/blob/development/imgs/Untitled%201.png)
 
 # Endpoints
 
