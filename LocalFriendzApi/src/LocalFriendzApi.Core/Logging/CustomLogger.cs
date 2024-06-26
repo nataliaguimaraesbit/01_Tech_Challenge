@@ -49,7 +49,6 @@ namespace LocalFriendzApi.Core.Logging
                 Directory.CreateDirectory(Path.GetDirectoryName(caminhoArquivoLog));
                 File.Create(caminhoArquivoLog).Dispose();
             }
-
             using StreamWriter streamWriter = new(caminhoArquivoLog, true);
             streamWriter.WriteLine(mensagem);
             streamWriter.Close();
