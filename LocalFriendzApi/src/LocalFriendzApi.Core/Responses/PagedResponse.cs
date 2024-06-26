@@ -10,13 +10,15 @@ namespace LocalFriendzApi.Core.Responses
         TData? data,
         int totalCount,
         int currentPage = 1,
-        int pageSize = ConfigurationPage.DefaultPageSize)
+        int pageSize = ConfigurationPage.DefaultPageSize,
+        string? message = null)
         : base(data)
         {
             Data = data;
             TotalCount = totalCount;
             CurrentPage = currentPage;
             PageSize = pageSize;
+            Message = message;
         }
 
         public PagedResponse(

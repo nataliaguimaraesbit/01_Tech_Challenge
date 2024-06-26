@@ -42,14 +42,13 @@ namespace LocalFriendzApi.Infrastructure.Migrations
 
             modelBuilder.Entity("LocalFriendzApi.Core.Models.Contact", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("IdContact")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id_contact");
 
-                    b.Property<Guid>("AreaCodeId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("fk_id_area_code");
+                    b.Property<Guid?>("AreaCodeIdAreaCode")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -69,9 +68,9 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                         .HasColumnType("VARCHAR")
                         .HasColumnName("phone");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdContact");
 
-                    b.HasIndex("AreaCodeId");
+                    b.HasIndex("AreaCodeIdAreaCode");
 
                     b.ToTable("TB_CONTACT", (string)null);
                 });
@@ -80,9 +79,7 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                 {
                     b.HasOne("LocalFriendzApi.Core.Models.AreaCode", "AreaCode")
                         .WithMany()
-                        .HasForeignKey("AreaCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AreaCodeIdAreaCode");
 
                     b.Navigation("AreaCode");
                 });

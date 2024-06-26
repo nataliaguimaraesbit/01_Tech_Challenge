@@ -5,15 +5,15 @@ namespace LocalFriendzApi.Core.Responses
 {
     public class Response<TData>
     {
-        private int _code = ConfigurationPage.DefaultStatusCode;
+        public int Code = ConfigurationPage.DefaultStatusCode;
 
         [JsonConstructor]
-        public Response() => _code = ConfigurationPage.DefaultStatusCode;
+        public Response() => Code = ConfigurationPage.DefaultStatusCode;
 
         public Response(TData? data, int code = ConfigurationPage.DefaultStatusCode, string? message = null)
         {
             Data = data;
-            _code = code;
+            Code = code;
             Message = message;
         }
 
@@ -21,6 +21,6 @@ namespace LocalFriendzApi.Core.Responses
         public string? Message { get; set; }
 
         [JsonIgnore]
-        public bool IsSuccess => _code is >= 200 and <= 299;
+        public bool IsSuccess => Code is >= 200 and <= 299;
     }
 }

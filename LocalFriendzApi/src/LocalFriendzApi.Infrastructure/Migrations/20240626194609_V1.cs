@@ -30,23 +30,22 @@ namespace LocalFriendzApi.Infrastructure.Migrations
                     name = table.Column<string>(type: "VARCHAR(100)", maxLength: 100, nullable: false),
                     phone = table.Column<string>(type: "VARCHAR(20)", maxLength: 20, nullable: false),
                     email = table.Column<string>(type: "VARCHAR(40)", maxLength: 40, nullable: false),
-                    fk_id_area_code = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    AreaCodeIdAreaCode = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TB_CONTACT", x => x.id_contact);
                     table.ForeignKey(
-                        name: "FK_TB_CONTACT_TB_AREA_CODE_fk_id_area_code",
-                        column: x => x.fk_id_area_code,
+                        name: "FK_TB_CONTACT_TB_AREA_CODE_AreaCodeIdAreaCode",
+                        column: x => x.AreaCodeIdAreaCode,
                         principalTable: "TB_AREA_CODE",
-                        principalColumn: "id_area_code",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id_area_code");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TB_CONTACT_fk_id_area_code",
+                name: "IX_TB_CONTACT_AreaCodeIdAreaCode",
                 table: "TB_CONTACT",
-                column: "fk_id_area_code");
+                column: "AreaCodeIdAreaCode");
         }
 
         /// <inheritdoc />
