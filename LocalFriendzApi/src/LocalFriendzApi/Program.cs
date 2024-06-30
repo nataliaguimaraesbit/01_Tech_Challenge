@@ -5,8 +5,9 @@ using LocalFriendzApi.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
 builder.AddDataContexts();
-builder.AddDocumentation();
 builder.AddServices();
+builder.AddDocumentation();
+builder.AddLogging();
 
 var app = builder.Build();
 app.MapEndpoints();
