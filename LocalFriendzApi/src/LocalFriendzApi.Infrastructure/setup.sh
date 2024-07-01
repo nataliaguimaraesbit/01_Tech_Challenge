@@ -31,6 +31,25 @@ if [ ! -f "$PROJECT_FILE" ]; then
     exit 1
 fi
 
+# Função para verificar e apagar o banco de dados existente
+function drop_database {
+    info "Verificando se o banco de dados $DB_NAME existe..."
+    if dotnet ef database list -p "$MIGRATION_PROJECT" -s "$STARTUP_PROJECT" | grep "$DB_NAME" > /dev/null; then
+        info "Banco de dados $DB_NAME encontrado. Apagando o banco de dados..."
+        dotnet ef database drop -p "$MIGRATION_PROJECT" -s "$STARTUP_PROJECT" --force
+        if [ $? -ne 0 ]; then
+            error "Falha ao apagar o banco de dados $DB_NAME."
+            exit 1
+        fi
+        info "Banco de dados $DB_NAME apagado com sucesso."
+    else
+        info "Banco de dados $DB_NAME não encontrado. Continuando..."
+    fi
+}
+
+# Chamar a função para apagar o banco de dados existente, se houver
+drop_database
+
 # Atualizar a versão da ferramenta Entity Framework
 info "Atualizando a versão da ferramenta Entity Framework..."
 dotnet tool update --global dotnet-ef --version 8.0.6
