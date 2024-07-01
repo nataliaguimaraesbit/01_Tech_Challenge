@@ -1,4 +1,5 @@
-﻿using LocalFriendzApi.Application.IServices;
+﻿using FluentValidation;
+using LocalFriendzApi.Application.IServices;
 using LocalFriendzApi.Commom.Api;
 using LocalFriendzApi.Core.Requests.Contact;
 using System.Net;
@@ -11,20 +12,24 @@ namespace LocalFriendzApi.Endpoints
         {
             var contactGroup = app.MapGroup("/Contact");
 
-            contactGroup.MapPost("api/create-contact", async (IContactServices contactServices, CreateContactRequest request) =>
+            contactGroup.MapPost("api/create-contact", async (IContactServices contactServices, IValidator<CreateContactRequest> validator, CreateContactRequest request) =>
             {
-                var response = await contactServices.CreateAsync(request);
+                var validationResult = await validator.ValidateAsync(request);
+                if (!validationResult.IsValid)
+                {
+                    return Results.ValidationProblem(validationResult.ToDictionary());
+                }
 
+                var response = await contactServices.CreateAsync(request);
                 return response.ConfigureResponseStatus();
 
-            })
-            .WithTags("Contact")
-            .WithName("Contact: Create Contact")
-            .WithSummary("Create a new contact record.")
-            .WithDescription("Creates and saves a new contact in the system. This endpoint requires valid contact details including name, email, and phone number. Returns the created contact information upon successful save.")
-            .Produces((int)HttpStatusCode.Created)
-            .Produces((int)HttpStatusCode.InternalServerError)
-            .WithOpenApi();
+            }).WithTags("Contact").WithName("Contact: Create Contact")
+              .WithSummary("Create a new contact record.")
+              .WithDescription("Creates and saves a new contact in the system. This endpoint requires valid contact details including name, email, and phone number. Returns the created contact information upon successful save.")
+              .Produces((int)HttpStatusCode.Created)
+              .Produces((int)HttpStatusCode.BadRequest)
+              .Produces((int)HttpStatusCode.InternalServerError)
+              .WithOpenApi();
 
             contactGroup.MapGet("api/list-all", async (IContactServices contactServices) =>
             {
@@ -59,21 +64,25 @@ namespace LocalFriendzApi.Endpoints
             .Produces((int)HttpStatusCode.InternalServerError)
             .WithOpenApi();
 
-            contactGroup.MapPut("api/update-contact", async (IContactServices contactServices, Guid id, UpdateContactRequest request) =>
+            contactGroup.MapPut("api/update-contact", async (IContactServices contactServices, IValidator<UpdateContactRequest> validator, Guid id, UpdateContactRequest request) =>
             {
-                var response = await contactServices.PutContact(id, request);
+                var validationResult = await validator.ValidateAsync(request);
+                if (!validationResult.IsValid)
+                {
+                    return Results.ValidationProblem(validationResult.ToDictionary());
+                }
 
+                var response = await contactServices.PutContact(id, request);
                 return response.ConfigureResponseStatus();
 
-            })
-            .WithTags("Contact")
-            .WithName("Contact: Update")
-            .WithSummary("Update an existing contact record.")
-            .WithDescription("Updates the details of an existing contact in the system. This endpoint requires the contact's unique identifier and the new information to be updated. If the contact exists, it will be updated with the provided details.")
-            .Produces((int)HttpStatusCode.OK)
-            .Produces((int)HttpStatusCode.NotFound)
-            .Produces((int)HttpStatusCode.InternalServerError)
-            .WithOpenApi();
+            }).WithTags("Contact").WithName("Contact: Update")
+              .WithSummary("Update an existing contact record.")
+              .WithDescription("Updates the details of an existing contact in the system. This endpoint requires the contact's unique identifier and the new information to be updated. If the contact exists, it will be updated with the provided details.")
+              .Produces((int)HttpStatusCode.OK)
+              .Produces((int)HttpStatusCode.BadRequest)
+              .Produces((int)HttpStatusCode.NotFound)
+              .Produces((int)HttpStatusCode.InternalServerError)
+              .WithOpenApi();
 
             contactGroup.MapDelete("api/delete-contact", async (IContactServices contactServices, Guid id) =>
             {
