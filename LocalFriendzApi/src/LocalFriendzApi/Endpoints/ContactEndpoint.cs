@@ -99,6 +99,31 @@ namespace LocalFriendzApi.Endpoints
               .Produces((int)HttpStatusCode.NotFound)
               .Produces((int)HttpStatusCode.InternalServerError)
               .WithOpenApi();
+
+            contactGroup.MapPost("api/create-random-contacts", async (IContactServices contactServices) =>
+            {
+                var randomContacts = contactServices.ContactGenerator(100);
+
+                foreach (var contact in randomContacts)
+                {
+                    await contactServices.CreateAsync(new CreateContactRequest
+                    {
+                        Name = contact.Name,
+                        Phone = contact.Phone,
+                        Email = contact.Email,
+                        CodeRegion = contact.AreaCode?.CodeRegion
+                    });
+                }
+
+                return Results.Ok("100 random contacts created successfully.");
+
+            }).WithTags("Contact")
+              .WithName("Contact: Create Random Contacts")
+              .WithSummary("Create 100 random contacts.")
+              .WithDescription("Generates and saves 100 random contacts in the system.")
+              .Produces((int)HttpStatusCode.OK)
+              .Produces((int)HttpStatusCode.InternalServerError)
+              .WithOpenApi();
         }
     }
 }
