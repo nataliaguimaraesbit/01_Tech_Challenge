@@ -1,4 +1,5 @@
-﻿using LocalFriendzApi.Application.IServices;
+﻿using Bogus;
+using LocalFriendzApi.Application.IServices;
 using LocalFriendzApi.Core.IRepositories;
 using LocalFriendzApi.Core.Models;
 using LocalFriendzApi.Core.Requests.Contact;
@@ -46,6 +47,21 @@ namespace LocalFriendzApi.Application.Services
 
             var response = await _contactRepository.GetContactByFilter(request);
             return response;
+        }
+
+        public IEnumerable<Contact> ContactGenerator(int numberOfContacts)
+        {
+            var faker = new Faker<Contact>()
+                .RuleFor(c => c.IdContact, f => Guid.NewGuid())
+                .RuleFor(c => c.Name, f => f.Person.FullName)
+                .RuleFor(c => c.Phone, f => {
+                    string phoneNumber = f.Phone.PhoneNumber();
+                    return phoneNumber.Length <= 20 ? phoneNumber : phoneNumber.Substring(0, 20);
+                })
+                .RuleFor(c => c.Email, f => f.Internet.Email())
+                .RuleFor(c => c.AreaCode, f => new AreaCode { CodeRegion = f.Address.ZipCode().Substring(0, 2) });
+
+            return faker.Generate(numberOfContacts);
         }
     }
 }

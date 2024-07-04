@@ -11,5 +11,6 @@ namespace LocalFriendzApi.Application.IServices
         Task<Response<Contact?>> PutContact(Guid id, UpdateContactRequest request);
         Task<Response<Contact?>> DeleteContact(Guid id);
         Task<PagedResponse<List<Contact>?>> GetByFilter(string request);
+        IEnumerable<Contact> ContactGenerator(int numberOfContacts);
     }
 }

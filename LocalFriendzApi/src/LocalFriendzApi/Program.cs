@@ -1,8 +1,14 @@
+using FluentValidation;
 using LocalFriendzApi.Commom.Api;
+using LocalFriendzApi.Core.Validations;
 using LocalFriendzApi.Endpoints;
 using LocalFriendzApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateContactRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateContactRequestValidator>();
+
 builder.AddConfiguration();
 builder.AddDataContexts();
 builder.AddServices();
