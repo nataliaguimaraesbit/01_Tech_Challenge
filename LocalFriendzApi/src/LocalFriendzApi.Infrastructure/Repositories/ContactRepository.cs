@@ -49,7 +49,6 @@ namespace LocalFriendzApi.Infrastructure.Repositories
 
                 var contact = await _context.Contacts
                                         .Where(c => c.IdContact == idContact)
-                                        .Include(c => c.AreaCode)
                                         .FirstOrDefaultAsync(c => c.IdContact == idContact);
 
                 if (contact is null)
@@ -59,10 +58,10 @@ namespace LocalFriendzApi.Infrastructure.Repositories
                 }
 
                 // Novos valores
-                contact.Name = request.Name;
+                contact.Name = request.Name!;
+                contact.Phone = request.Phone!;
+                contact.DDD = request.DDD!;
                 contact.Email = request.Email;
-                contact.Phone = request.Phone;
-                contact.AreaCode.CodeRegion = request.AreaCode;
 
                 _context.Contacts.Update(contact);
                 await _context.SaveChangesAsync();
@@ -84,7 +83,6 @@ namespace LocalFriendzApi.Infrastructure.Repositories
                 _logger.LogInformation("Delete method called for Contact ID: {ContactId}", idContact);
 
                 var contact = await _context.Contacts
-                                        .Include(c => c.AreaCode)
                                         .FirstOrDefaultAsync(c => c.IdContact == idContact);
 
                 if (contact is null)
@@ -117,7 +115,6 @@ namespace LocalFriendzApi.Infrastructure.Repositories
                 var query = await _context
                                   .Contacts
                                   .AsNoTracking()
-                                  .Include(c => c.AreaCode)
                                   .OrderBy(c => c.Name)
                                   .ToListAsync();
 
@@ -150,34 +147,49 @@ namespace LocalFriendzApi.Infrastructure.Repositories
             }
         }
 
-        public async Task<PagedResponse<List<Contact>?>> GetContactByFilter(GetByCodeRegionRequest request)
+        public async Task<PagedResponse<List<Contact>?>> GetContactByFilter(GetByParamsRequest request)
         {
             try
             {
-                _logger.LogInformation("GetAll method called. PageNumber: {PageNumber}, PageSize: {PageSize}", request.PageNumber, request.PageSize);
+                _logger.LogInformation("GetContactByFilter method called. PageNumber: {PageNumber}, PageSize: {PageSize}", request.PageNumber, request.PageSize);
 
-                var query = await _context
-                                  .Contacts
-                                  .AsNoTracking()
-                                  .Where(c => c.AreaCode.CodeRegion.Equals(request.CodeRegion))
-                                  .Include(c => c.AreaCode)
-                                  .OrderBy(c => c.Name)
-                                  .ToListAsync();
+                var query = _context.Contacts.AsNoTracking();
 
-                var contacts = query
-                                   .Skip((request.PageNumber - 1) * request.PageSize)
-                                   .Take(request.PageSize)
-                                   .ToList();
+                if (!string.IsNullOrEmpty(request.Name))
+                {
+                    query = query.Where(c => c.Name.Contains(request.Name));
+                }
 
-                var count = query.Count();
+                if (!string.IsNullOrEmpty(request.Phone))
+                {
+                    query = query.Where(c => c.Phone.Contains(request.Phone));
+                }
 
-                if (contacts.Any() is false)
+                if (!string.IsNullOrEmpty(request.DDD))
+                {
+                    query = query.Where(c => c.DDD.Contains(request.DDD));
+                }
+
+                if (!string.IsNullOrEmpty(request.Email))
+                {
+                    query = query.Where(c => c.Email.Contains(request.Email));
+                }
+
+                var count = await query.CountAsync();
+
+                var contacts = await query
+                                    .OrderBy(c => c.Name)
+                                    .Skip((request.PageNumber - 1) * request.PageSize)
+                                    .Take(request.PageSize)
+                                    .ToListAsync();
+
+                if (!contacts.Any())
                 {
                     _logger.LogInformation("Contacts not found!");
                     return new PagedResponse<List<Contact>?>(null, 404, message: "Not found contact.");
                 }
 
-                _logger.LogInformation("GetAll method executed successfully. Total contacts: {Count}", count);
+                _logger.LogInformation("GetContactByFilter method executed successfully. Total contacts: {Count}", count);
 
                 return new PagedResponse<List<Contact>?>(
                     contacts,
@@ -188,8 +200,8 @@ namespace LocalFriendzApi.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while getting all contacts.");
-                return new PagedResponse<List<Contact>?>(null, 500, message: "Internal Server Erro!");
+                _logger.LogError(ex, "An error occurred while getting contacts by filter.");
+                return new PagedResponse<List<Contact>?>(null, 500, message: "Internal Server Error!");
             }
         }
     }

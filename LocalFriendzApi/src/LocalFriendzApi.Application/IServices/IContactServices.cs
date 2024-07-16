@@ -10,7 +10,7 @@ namespace LocalFriendzApi.Application.IServices
         Task<PagedResponse<List<Contact>?>> GetAll(GetAllContactRequest request);
         Task<Response<Contact?>> PutContact(Guid id, UpdateContactRequest request);
         Task<Response<Contact?>> DeleteContact(Guid id);
-        Task<PagedResponse<List<Contact>?>> GetByFilter(string request);
+        Task<PagedResponse<List<Contact>?>> GetByFilter(GetByParamsRequest request);
         IEnumerable<Contact> ContactGenerator(int numberOfContacts);
     }
 }

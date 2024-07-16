@@ -16,13 +16,14 @@ namespace LocalFriendzApi.Core.Validations
                 .NotEmpty().WithMessage("Phone is required.")
                 .Matches(@"^\+?\d{10,15}$").WithMessage("Phone number must be a valid international phone number.");
 
+            RuleFor(x => x.DDD)
+                .NotEmpty().WithMessage("CodeRegion is required.")
+                .MinimumLength(4).WithMessage("CodeRegion must be at least 4 characters long.");
+
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("A valid email is required.")
                 .EmailAddress().WithMessage("A valid email is required.");
 
-            RuleFor(x => x.CodeRegion)
-                .NotEmpty().WithMessage("CodeRegion is required.")
-                .MinimumLength(2).WithMessage("CodeRegion must be at least 2 characters long.");
 
             RuleFor(x => x)
                 .Must(HaveUniquePhoneOrEmail).WithMessage("A contact with the same phone or email already exists.");

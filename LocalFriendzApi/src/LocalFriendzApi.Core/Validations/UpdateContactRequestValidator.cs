@@ -20,9 +20,9 @@ namespace LocalFriendzApi.Core.Validations
                 .NotEmpty().WithMessage("A valid email is required.")
                 .EmailAddress().WithMessage("A valid email is required.");
 
-            RuleFor(x => x.AreaCode)
+            RuleFor(x => x.DDD)
                 .NotEmpty().WithMessage("CodeRegion is required.")
-                .MinimumLength(2).WithMessage("CodeRegion must be at least 2 characters long.");
+                .MinimumLength(4).WithMessage("CodeRegion must be at least 4 characters long.");
 
             RuleFor(x => x)
                 .Must(HaveUniquePhoneOrEmail).WithMessage("A contact with the same phone or email already exists.");
