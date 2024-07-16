@@ -11,5 +11,6 @@ namespace LocalFriendzApi.Core.IRepositories
         Task<PagedResponse<List<Contact>?>> GetContactByFilter(GetByParamsRequest request);
         Task<Response<Contact?>> Update(Guid id, UpdateContactRequest request);
         Task<Response<Contact?>> Delete(Guid id);
+        Task<bool> EmailExistsAsync(string email);
     }
 }

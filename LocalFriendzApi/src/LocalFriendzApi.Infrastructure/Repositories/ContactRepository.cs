@@ -204,5 +204,10 @@ namespace LocalFriendzApi.Infrastructure.Repositories
                 return new PagedResponse<List<Contact>?>(null, 500, message: "Internal Server Error!");
             }
         }
+
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _context.Contacts.AnyAsync(c => c.Email == email);
+        }
     }
 }
