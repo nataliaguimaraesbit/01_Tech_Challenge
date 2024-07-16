@@ -53,10 +53,7 @@ namespace LocalFriendzApi.Application.Services
             var faker = new Faker<Contact>()
                 .RuleFor(c => c.IdContact, f => Guid.NewGuid())
                 .RuleFor(c => c.Name, f => f.Person.FullName)
-                .RuleFor(c => c.Phone, f => {
-                    string phoneNumber = f.Phone.PhoneNumber();
-                    return phoneNumber.Length <= 20 ? phoneNumber : phoneNumber.Substring(0, 20);
-                })
+                .RuleFor(c => c.Phone, f => GenerateBrazilianPhoneNumber(f))
                 .RuleFor(c => c.DDD, f => f.PickRandom(GetValidDDDs()))
                 .RuleFor(c => c.Email, f => f.Internet.Email());
 
@@ -64,7 +61,13 @@ namespace LocalFriendzApi.Application.Services
         }
 
         #region Methods Private
+        private string GenerateBrazilianPhoneNumber(Faker f)
+        {
+            bool isNineDigit = f.Random.Bool(0.8f);
+            string phoneNumber = isNineDigit ? f.Phone.PhoneNumber("9########") : f.Phone.PhoneNumber("########");
 
+            return phoneNumber;
+        }
         private List<string> GetValidDDDs()
         {
             return new List<string>

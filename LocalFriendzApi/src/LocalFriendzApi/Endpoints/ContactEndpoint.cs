@@ -52,10 +52,10 @@ namespace LocalFriendzApi.Endpoints
             .Produces((int)HttpStatusCode.InternalServerError)
             .WithOpenApi();
 
-            contactGroup.MapGet("api/list-by-filter", async(
-                 [FromServices] IContactServices contactServices,
-                 [FromServices] IValidator < GetByParamsRequest > validator,
-                 [FromBody] GetByParamsRequest request) =>
+            contactGroup.MapGet("api/list-by-filter", async (
+                [FromServices] IContactServices contactServices,
+                [FromServices] IValidator<GetByParamsRequest> validator,
+                [AsParameters] GetByParamsRequest request) =>
             {
                 var validationResult = await validator.ValidateAsync(request);
                 if (!validationResult.IsValid)
@@ -117,7 +117,7 @@ namespace LocalFriendzApi.Endpoints
             .WithOpenApi();
 
             contactGroup.MapPost("api/create-random-contacts", async (
-                 [FromServices] IContactServices contactServices) =>
+                [FromServices] IContactServices contactServices) =>
             {
                 var randomContacts = contactServices.ContactGenerator(100);
 
