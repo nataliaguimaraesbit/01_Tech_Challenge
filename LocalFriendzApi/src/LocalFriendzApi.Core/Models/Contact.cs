@@ -7,8 +7,8 @@ namespace LocalFriendzApi.Core.Models
         public Guid IdContact { get; set; }
         public string? Name { get; set; }
         public string? Phone { get; set; }
+        public string? DDD { get; set; }
         public string? Email { get; set; }
-        public AreaCode? AreaCode { get; set; }
 
         public static Contact RequestMapper(CreateContactRequest request)
         {
@@ -18,8 +18,8 @@ namespace LocalFriendzApi.Core.Models
                 IdContact = Guid.NewGuid(),
                 Name = request.Name,
                 Phone = request.Phone,
-                Email = request.Email,
-                AreaCode = AreaCode.RequestMapper(request)
+                DDD = request.DDD,
+                Email = request.Email
             };
         }
     }

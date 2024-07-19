@@ -26,6 +26,12 @@ namespace LocalFriendzApi.Infrastructure.Data.Mappings
                 .HasColumnType("VARCHAR")
                 .HasMaxLength(20);
 
+            builder.Property(c => c.DDD)
+                .IsRequired(true)
+                .HasColumnName("DDD")
+                .HasColumnType("VARCHAR")
+                .HasMaxLength(4);
+
             builder.Property(c => c.Email)
                 .IsRequired(true)
                 .HasColumnName("email")

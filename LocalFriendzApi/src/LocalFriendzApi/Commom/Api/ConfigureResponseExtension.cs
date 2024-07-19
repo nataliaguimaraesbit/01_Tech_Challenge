@@ -1,6 +1,5 @@
 ﻿using LocalFriendzApi.Core.Models;
 using LocalFriendzApi.Core.Responses;
-using Microsoft.AspNetCore.Mvc;
 
 namespace LocalFriendzApi.Commom.Api
 {
@@ -8,58 +7,28 @@ namespace LocalFriendzApi.Commom.Api
     {
         public static IResult ConfigureResponseStatus(this PagedResponse<List<Contact>?> response)
         {
-            switch (response.Code)
+            return response.Code switch
             {
-                case 200:
-                    return TypedResults.Ok(response);
-                case 201:
-                    return TypedResults.Created(response.Data.FirstOrDefault().ToString());
-                    break;
-                case 400:
-                    return TypedResults.BadRequest(response);
-                    break;
-                case 404:
-                    return TypedResults.NotFound(response);
-                    break;
-                case 500:
-                    var objectResult = new ObjectResult(response)
-                    {
-                        StatusCode = StatusCodes.Status500InternalServerError
-                    };
-
-                    return (IResult)objectResult;
-                    break;
-                default:
-                    return TypedResults.NoContent();
-            }
+                200 => Results.Ok(response),
+                201 => Results.Created(response.Data.FirstOrDefault()?.ToString() ?? string.Empty, response),
+                400 => Results.BadRequest(response),
+                404 => Results.NotFound(response),
+                500 => Results.Problem(response.Message, statusCode: StatusCodes.Status500InternalServerError),
+                _ => Results.NoContent(),
+            };
         }
 
         public static IResult ConfigureResponseStatus(this Response<Contact>? response)
         {
-            switch (response.Code)
+            return response?.Code switch
             {
-                case 200:
-                    return TypedResults.Ok(response);
-                case 201:
-                    return TypedResults.Created(response.Data.ToString());
-                    break;
-                case 400:
-                    return TypedResults.BadRequest(response);
-                    break;
-                case 404:
-                    return TypedResults.NotFound(response);
-                    break;
-                case 500:
-                    var objectResult = new ObjectResult(response)
-                    {
-                        StatusCode = StatusCodes.Status500InternalServerError
-                    };
-
-                    return (IResult)objectResult;
-                    break;
-                default:
-                    return TypedResults.NoContent();
-            }
+                200 => Results.Ok(response),
+                201 => Results.Created(response.Data?.ToString() ?? string.Empty, response),
+                400 => Results.BadRequest(response),
+                404 => Results.NotFound(response),
+                500 => Results.Problem(response.Message, statusCode: StatusCodes.Status500InternalServerError),
+                _ => Results.NoContent(),
+            };
         }
     }
 }

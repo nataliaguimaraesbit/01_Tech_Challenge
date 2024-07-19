@@ -1,12 +1,18 @@
 ﻿using FluentValidation;
+using LocalFriendzApi.Core.IRepositories;
 using LocalFriendzApi.Core.Requests.Contact;
+using System.Threading.Tasks;
 
 namespace LocalFriendzApi.Core.Validations
 {
     public class CreateContactRequestValidator : AbstractValidator<CreateContactRequest>
     {
-        public CreateContactRequestValidator()
+        private readonly IContactRepository _contactRepository;
+
+        public CreateContactRequestValidator(IContactRepository contactRepository)
         {
+            _contactRepository = contactRepository;
+
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage("Name is required.")
                 .MinimumLength(2).WithMessage("Name must be at least 2 characters long.")
@@ -14,30 +20,23 @@ namespace LocalFriendzApi.Core.Validations
 
             RuleFor(x => x.Phone)
                 .NotEmpty().WithMessage("Phone is required.")
-                .Matches(@"^\+?\d{10,15}$").WithMessage("Phone number must be a valid international phone number.");
+                .Matches(@"^\d{8,9}$").WithMessage("Phone number must be a valid Brazilian phone number with 8 or 9 digits (e.g., 912345678).");
+
+            RuleFor(x => x.DDD)
+                .NotEmpty().WithMessage("DDD is required.")
+                .Length(2).WithMessage("DDD must be exactly 2 characters long.");
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("A valid email is required.")
-                .EmailAddress().WithMessage("A valid email is required.");
-
-            RuleFor(x => x.CodeRegion)
-                .NotEmpty().WithMessage("CodeRegion is required.")
-                .MinimumLength(2).WithMessage("CodeRegion must be at least 2 characters long.");
-
-            RuleFor(x => x)
-                .Must(HaveUniquePhoneOrEmail).WithMessage("A contact with the same phone or email already exists.");
+                .EmailAddress().WithMessage("A valid email is required.")
+                .MustAsync(BeUniqueEmail).WithMessage("A contact with the same email already exists.");
         }
 
-        #region
-        private bool HaveUniquePhoneOrEmail(CreateContactRequest request)
-        {
-            // Simulate a uniqueness check. In a real scenario, you might query your database here.
-            var existingContacts = new List<CreateContactRequest>
-            {
-                new CreateContactRequest { Phone = "+1234567890", Email = "existing@example.com" }
-            };
+        #region Methods Private
 
-            return !existingContacts.Any(c => c.Phone == request.Phone || c.Email == request.Email);
+        private async Task<bool> BeUniqueEmail(string email, CancellationToken cancellationToken)
+        {
+            return !await _contactRepository.EmailExistsAsync(email);
         }
         #endregion
     }

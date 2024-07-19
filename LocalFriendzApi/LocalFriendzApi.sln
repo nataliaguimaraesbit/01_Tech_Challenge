@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalFriendzApi", "src\LocalFriendzApi\LocalFriendzApi.csproj", "{FBE4EB51-E136-4B39-8509-A39E1EDE6180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalFriendzApi", "src\LocalFriendzApi\LocalFriendzApi.csproj", "{FBE4EB51-E136-4B39-8509-A39E1EDE6180}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalFriendzApi.Application", "src\LocalFriendzApi.Application\LocalFriendzApi.Application.csproj", "{D36B1435-5547-48A9-8472-BED451E9D5F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalFriendzApi.Application", "src\LocalFriendzApi.Application\LocalFriendzApi.Application.csproj", "{D36B1435-5547-48A9-8472-BED451E9D5F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalFriendzApi.Core", "src\LocalFriendzApi.Core\LocalFriendzApi.Core.csproj", "{B77E5485-3DF0-4BD3-B4B8-EB14770AB0C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalFriendzApi.Core", "src\LocalFriendzApi.Core\LocalFriendzApi.Core.csproj", "{B77E5485-3DF0-4BD3-B4B8-EB14770AB0C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalFriendzApi.Infrastructure", "src\LocalFriendzApi.Infrastructure\LocalFriendzApi.Infrastructure.csproj", "{D7DA3E3A-2AE9-45E7-8A9D-893DAE09E066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalFriendzApi.Infrastructure", "src\LocalFriendzApi.Infrastructure\LocalFriendzApi.Infrastructure.csproj", "{D7DA3E3A-2AE9-45E7-8A9D-893DAE09E066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalFriendzApi.Tests", "tests\LocalFriendzApi.Tests\LocalFriendzApi.Tests.csproj", "{C96CDAED-D385-4135-9DD5-4591DC708CB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalFriendzApi.Tests", "LocalFriendzApi.Tests\LocalFriendzApi.Tests.csproj", "{51384824-D4B6-453E-B8E3-7955D560CC2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{D7DA3E3A-2AE9-45E7-8A9D-893DAE09E066}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7DA3E3A-2AE9-45E7-8A9D-893DAE09E066}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7DA3E3A-2AE9-45E7-8A9D-893DAE09E066}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C96CDAED-D385-4135-9DD5-4591DC708CB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C96CDAED-D385-4135-9DD5-4591DC708CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C96CDAED-D385-4135-9DD5-4591DC708CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C96CDAED-D385-4135-9DD5-4591DC708CB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51384824-D4B6-453E-B8E3-7955D560CC2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51384824-D4B6-453E-B8E3-7955D560CC2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51384824-D4B6-453E-B8E3-7955D560CC2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51384824-D4B6-453E-B8E3-7955D560CC2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
