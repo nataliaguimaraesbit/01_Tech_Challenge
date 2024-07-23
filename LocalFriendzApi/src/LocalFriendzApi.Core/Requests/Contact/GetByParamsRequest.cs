@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LocalFriendzApi.Core.Requests.Contact
 {
@@ -21,5 +22,10 @@ namespace LocalFriendzApi.Core.Requests.Contact
 
         [FromQuery(Name = "email")]
         public string? Email { get; set; }
+
+        public ValidationResult Validator()
+        {
+            return new GetByParamsRequestValidator().Validate(this);
+        }
     }
 }
