@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using LocalFriendzApi.Core.IRepositories;
 using LocalFriendzApi.Core.Requests.Contact;
-using System.Threading.Tasks;
 
 namespace LocalFriendzApi.Core.Validations
 {
