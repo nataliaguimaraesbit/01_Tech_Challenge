@@ -125,12 +125,6 @@ namespace LocalFriendzApi.Infrastructure.Repositories
 
                 var count = query.Count();
 
-                if (contacts.Any() is false)
-                {
-                    _logger.LogInformation("Contacts not found!");
-                    return new PagedResponse<List<Contact>?>(null, 404, message: "Not found contact.");
-                }
-
                 _logger.LogInformation("GetAll method executed successfully. Total contacts: {Count}", count);
 
                 return new PagedResponse<List<Contact>?>(
@@ -202,6 +196,31 @@ namespace LocalFriendzApi.Infrastructure.Repositories
             {
                 _logger.LogError(ex, "An error occurred while getting contacts by filter.");
                 return new PagedResponse<List<Contact>?>(null, 500, message: "Internal Server Error!");
+            }
+        }
+
+        public async Task<Response<Contact?>> GetById(Guid idContact)
+        {
+            try
+            {
+                _logger.LogInformation("GetById method called for Contact ID: {ContactId}", idContact);
+
+                var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.IdContact == idContact);
+
+                if (contact is null)
+                {
+                    _logger.LogWarning("Contact not found: {ContactId}", idContact);
+                    return new Response<Contact?>(null, 404, message: "Contact not found!");
+                }
+
+                _logger.LogInformation("GetById method executed successfully. Total contacts: {idContact}", idContact);
+
+                return new Response<Contact?>(contact, message: "Contact found successfully.!");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting contact by id.");
+                return new Response<Contact?>(null, 500, message: "Internal Server Error!");
             }
         }
 
