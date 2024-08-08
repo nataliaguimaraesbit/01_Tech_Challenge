@@ -63,12 +63,6 @@ CREATE DATABASE DB_FIAP_ARQUITETO
 -- USER DATABASE
 USE DB_FIAP_ARQUITETO
 
--- CREATIATION TABLES
-CREATE TABLE TB_AREA_CODE(
-	id_area_code UNIQUEIDENTIFIER NOT NULL,
-	code_region INT NOT NULL,
-	PRIMARY KEY(id_area_code)
-)
 
 CREATE TABLE TB_CONTACT(
 	id_contact UNIQUEIDENTIFIER NOT NULL,
@@ -78,14 +72,7 @@ CREATE TABLE TB_CONTACT(
 	fk_id_area_code UNIQUEIDENTIFIER NOT NULL,
 	FOREIGN KEY (fk_id_area_code) REFERENCES TB_AREA_CODE(id_area_code),
 	PRIMARY KEY(id_contact)
-)
 
--- INSERT RECORDS
--- Inserindo registros na tabela TB_AREA_CODE
-INSERT INTO TB_AREA_CODE (id_area_code, code_region) VALUES
-('550e8400-e29b-41d4-a716-446655440000', 1),
-('550e8400-e29b-41d4-a716-446655440001', 2),
-('550e8400-e29b-41d4-a716-446655440002', 3);
 
 -- Inserindo registros na tabela TB_CONTACT
 INSERT INTO TB_CONTACT (id_contact, [name], phone, email, fk_id_area_code) VALUES
@@ -97,14 +84,9 @@ INSERT INTO TB_CONTACT (id_contact, [name], phone, email, fk_id_area_code) VALUE
 INSERT INTO TB_CONTACT (id_contact, [name], phone, email, fk_id_area_code) VALUES
 ('660e8400-e29b-41d4-a716-446655440003', 'Bob Smith', '555-6789', 'bob.smith@example.com', '550e8400-e29b-41d4-a716-446655440001');
 
--- SELECTS SOME RECORDS
-SELECT * FROM TB_AREA_CODE
+-- SELECTS SOME RECORD
 SELECT * FROM TB_CONTACT 
 
-SELECT c.name, c.phone, c.email, a.code_region FROM TB_CONTACT c
-INNER JOIN TB_AREA_CODE a
-ON a.id_area_code = c.fk_id_area_code order by [name]
-```
 
 Este comando cria uma nova migração baseada nas alterações feitas no modelo de dados.
 
