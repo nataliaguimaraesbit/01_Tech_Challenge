@@ -86,21 +86,18 @@ INSERT INTO TB_CONTACT (id_contact, [name], phone, email, fk_id_area_code) VALUE
 -- SELECTS SOME RECORD
 SELECT * FROM TB_CONTACT
 
+```
 
 Este comando cria uma nova migração baseada nas alterações feitas no modelo de dados.
 
 ```
-
 Add-Migration NomeDaMigracao
-
 ```
 
 Este comando aplica todas as migrações pendentes ao banco de dados.
 
 ```
-
 Update-Database
-
 ```
 
 # Documentação
@@ -120,7 +117,3 @@ Update-Database
 - [x]  Validação de e-mail, telefone e campos obrigatórios
 - [x]  Testes Unitários
 - [x]  Vídeo exibindo a entrega
-
-
-
-```
