@@ -10,7 +10,6 @@ Cenário de estudo de caso
 
 ![Cenário de estudo de caso](https://github.com/Jeffconexion/01_Tech_Challenge/blob/development/LocalFriendzApi/imgs/Untitled.png)
 
-
 # Domain StoryTelling
 
 Para esclarecimento foi desenvolvido o domain storytelling. Esse vai ser o fluxo da solução LocalFriendzApi
@@ -20,19 +19,19 @@ Para esclarecimento foi desenvolvido o domain storytelling. Esse vai ser o fluxo
 # Endpoints
 
 - POST /api/create-contact
-    - Adiciona novos contatos, incluindo nome, telefone e e-mail.
-    - Cada contato está associado a um DDD correspondente a região.
-    - Validações para garantir dados consistentes.
+  - Adiciona novos contatos, incluindo nome, telefone e e-mail.
+  - Cada contato está associado a um DDD correspondente a região.
+  - Validações para garantir dados consistentes.
 - GET /api/list-all e /api/list-by-filter
-    - Consulta contatos.
-    - Possibilidade de filtrar pelo DDD.
-    - Validações para garantir dados consistentes.
+  - Consulta contatos.
+  - Possibilidade de filtrar pelo DDD.
+  - Validações para garantir dados consistentes.
 - PUT /api/update-contact
-    - Atualização de contatos previamente cadastrado.
-    - Validações para garantir dados consistentes.
+  - Atualização de contatos previamente cadastrado.
+  - Validações para garantir dados consistentes.
 - DELETE /api/delete-contact
-    - Exclusão de contatos previamente cadastrado.
-    - Validações para garantir dados consistentes.
+  - Exclusão de contatos previamente cadastrado.
+  - Validações para garantir dados consistentes.
 
 # Tecnologias Utilizadas:
 
@@ -85,19 +84,23 @@ INSERT INTO TB_CONTACT (id_contact, [name], phone, email, fk_id_area_code) VALUE
 ('660e8400-e29b-41d4-a716-446655440003', 'Bob Smith', '555-6789', 'bob.smith@example.com', '550e8400-e29b-41d4-a716-446655440001');
 
 -- SELECTS SOME RECORD
-SELECT * FROM TB_CONTACT 
+SELECT * FROM TB_CONTACT
 
 
 Este comando cria uma nova migração baseada nas alterações feitas no modelo de dados.
 
 ```
+
 Add-Migration NomeDaMigracao
+
 ```
 
 Este comando aplica todas as migrações pendentes ao banco de dados.
 
 ```
+
 Update-Database
+
 ```
 
 # Documentação
@@ -114,9 +117,10 @@ Update-Database
 - [x]  Atualizar contato
 - [x]  Excluir contato
 - [x]  Persistência de dados com EF
-- [ ]  Validação de e-mail, telefone e campos obrigatórios
-- [ ]  Testes Unitários
-- [ ]  Vídeo exibindo a entrega
+- [x]  Validação de e-mail, telefone e campos obrigatórios
+- [x]  Testes Unitários
+- [x]  Vídeo exibindo a entrega
 
 
 
+```
