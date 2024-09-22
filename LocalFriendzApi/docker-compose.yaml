@@ -1,0 +1,59 @@
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: mssql
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - architectchallenge
+
+  web:
+    build:
+      context: .
+      dockerfile: src/LocalFriendzApi/Dockerfile
+    container_name: dotnet_app
+    restart: always
+    ports:
+      - "5005:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=localhost;Database=DB_FIAP_ARQUITETO;User=sa;Password=Your_password123;TrustServerCertificate=True"
+    depends_on:
+      - mssql
+    networks:
+      - architectchallenge
+
+  prometheus:
+    image: prom/prometheus:v2.49.1
+    ports:
+      - "9090:9090"
+    networks:
+      - architectchallenge
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    networks:
+      - architectchallenge
+    depends_on:
+      - prometheus
+
+networks:
+  architectchallenge:
+    driver: bridge
+
+
+volumes:
+  grafana-storage:

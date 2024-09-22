@@ -1,23 +1,34 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
+ENV ASPNETCORE_URLS=http://+:8080
+
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG configuration=Release
 WORKDIR /src
-COPY ["src/LocalFriendzApi/LocalFriendzApi.csproj", "src/LocalFriendzApi/"]
-RUN dotnet restore "./src/LocalFriendzApi/LocalFriendzApi.csproj"
-COPY . .
-WORKDIR "/src/src/LocalFriendzApi"
-RUN dotnet build "./LocalFriendzApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Copia todos os projetos
+COPY ["src/LocalFriendzApi/LocalFriendzApi.csproj", "LocalFriendzApi/"]
+COPY ["src/LocalFriendzApi.Application/LocalFriendzApi.Application.csproj", "LocalFriendzApi.Application/"]
+COPY ["src/LocalFriendzApi.Core/LocalFriendzApi.Core.csproj", "LocalFriendzApi.Core/"]
+COPY ["src/LocalFriendzApi.Infrastructure/LocalFriendzApi.Infrastructure.csproj", "LocalFriendzApi.Infrastructure/"]
+
+# Restaura as dependências
+RUN dotnet restore "LocalFriendzApi/LocalFriendzApi.csproj"
+
+# Agora copia todos os arquivos de cada projeto
+COPY src/LocalFriendzApi/. ./LocalFriendzApi/
+COPY src/LocalFriendzApi.Application/. ./LocalFriendzApi.Application/
+COPY src/LocalFriendzApi.Core/. ./LocalFriendzApi.Core/
+COPY src/LocalFriendzApi.Infrastructure/. ./LocalFriendzApi.Infrastructure/
+
+# Define o diretório de trabalho para o build
+WORKDIR "/src/LocalFriendzApi"
+RUN dotnet build "LocalFriendzApi.csproj" -c $configuration -o /app/build
 
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./LocalFriendzApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "LocalFriendzApi.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
